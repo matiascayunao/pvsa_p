@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h2 class="mb-0">Categorías</h2>
+      <div class="text-muted">Listado</div>
+    </div>
+    <a href="{% url 'crear_categoria_objeto' %}" class="btn btn-primary">+ Crear</a>
+  </div>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      {% if categorias %}
+        <div class="list-group list-group-flush">
+          {% for c in categorias %}
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+               href="{% url 'detalle_categoria' categoria_id=c.id %}">
+              <span>{{ c.nombre_de_categoria }}</span>
+              <span class="text-muted">Ver &raquo;</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="p-4"><div class="alert alert-secondary mb-0">No hay categorías registradas.</div></div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

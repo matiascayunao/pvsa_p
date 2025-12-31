@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width:560px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h3 class="mb-1">Crear categoría</h3>
+      <p class="text-muted mb-4">Ej: Eléctrico, Mecánico, Instrumentación.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.nombre_de_categoria.id_for_label }}">Nombre de categoría</label>
+          <input
+            type="text"
+            name="{{ form.nombre_de_categoria.name }}"
+            id="{{ form.nombre_de_categoria.id_for_label }}"
+            value="{{ form.nombre_de_categoria.value|default_if_none:'' }}"
+            class="form-control {% if form.nombre_de_categoria.errors %}is-invalid{% endif %}"
+            placeholder="Ej: Eléctrico"
+            required
+          >
+          {% if form.nombre_de_la_categoria.errors %}
+            <div class="invalid-feedback">{{ form.nombre_de_categoria.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Guardar</button>
+          <a class="btn btn-outline-secondary" href="{% url 'home' %}">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

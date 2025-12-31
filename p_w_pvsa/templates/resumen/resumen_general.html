@@ -1,0 +1,333 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Reportes / Resúmenes</h2>
+
+    <div class="row">
+        <!-- Panel de filtros -->
+        <div class="col-md-3 mb-3">
+            <div class="card shadow-sm border-0">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">Filtros</span>
+                    <a href="{% url 'resumen_general' %}" class="small text-decoration-none">
+                        Borrar filtros
+                    </a>
+                </div>
+                <div class="card-body">
+                    <form method="get" class="vstack gap-3">
+
+                        <!-- Sector -->
+                        <div>
+                            <label for="id_filtro_sector" class="form-label mb-1">Sector</label>
+                            <select id="id_filtro_sector"
+                                    name="sector"
+                                    class="form-select form-select-sm">
+                                <option value="">Todos los sectores</option>
+                                {% for s in sectores %}
+                                    <option value="{{ s.id }}"
+                                            {% if sector_actual == s.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ s.sector }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Ubicación -->
+                        <div>
+                            <label for="id_filtro_ubicacion" class="form-label mb-1">Ubicación</label>
+                            <select id="id_filtro_ubicacion"
+                                    name="ubicacion"
+                                    class="form-select form-select-sm">
+                                <option value="">Todas las ubicaciones</option>
+                                {% for u in ubicaciones %}
+                                    <option value="{{ u.id }}"
+                                            {% if ubicacion_actual == u.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ u.ubicacion }} ({{ u.sector.sector }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Piso -->
+                        <div>
+                            <label for="id_filtro_piso" class="form-label mb-1">Piso</label>
+                            <select id="id_filtro_piso"
+                                    name="piso"
+                                    class="form-select form-select-sm">
+                                <option value="">Todos los pisos</option>
+                                {% for p in pisos %}
+                                    <option value="{{ p.id }}"
+                                            {% if piso_actual == p.id|stringformat:'s' %}selected{% endif %}>
+                                        Piso {{ p.piso }} ({{ p.ubicacion }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Tipo de lugar -->
+                        <div>
+                            <label for="id_filtro_tipo_lugar" class="form-label mb-1">Tipo de lugar</label>
+                            <select id="id_filtro_tipo_lugar"
+                                    name="tipo_lugar"
+                                    class="form-select form-select-sm">
+                                <option value="">Todos los tipos de lugar</option>
+                                {% for tl in tipos_lugar %}
+                                    <option value="{{ tl.id }}"
+                                            {% if tipo_lugar_actual == tl.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ tl.tipo_de_lugar }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Categoría -->
+                        <div>
+                            <label for="id_filtro_categoria" class="form-label mb-1">Categoría de objeto</label>
+                            <select id="id_filtro_categoria"
+                                    name="categoria"
+                                    class="form-select form-select-sm">
+                                <option value="">Todas las categorías</option>
+                                {% for c in categorias %}
+                                    <option value="{{ c.id }}"
+                                            {% if categoria_actual == c.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ c.nombre_de_categoria }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Objeto -->
+                        <div>
+                            <label for="id_filtro_objeto" class="form-label mb-1">Objeto</label>
+                            <select id="id_filtro_objeto"
+                                    name="objeto"
+                                    class="form-select form-select-sm">
+                                <option value="">Todos los objetos</option>
+                                {% for o in objetos_catalogo %}
+                                    <option value="{{ o.id }}"
+                                            {% if objeto_actual == o.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ o.nombre_del_objeto }}
+                                        ({{ o.objeto_categoria.nombre_de_categoria }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Tipo de objeto -->
+                        <div>
+                            <label for="id_filtro_tipo_objeto" class="form-label mb-1">Tipo de objeto</label>
+                            <select id="id_filtro_tipo_objeto"
+                                    name="tipo_objeto"
+                                    class="form-select form-select-sm">
+                                <option value="">Todos los tipos</option>
+                                {% for t in tipos_objeto %}
+                                    <option value="{{ t.id }}"
+                                            {% if tipo_objeto_actual == t.id|stringformat:'s' %}selected{% endif %}>
+                                        {{ t.objeto.nombre_del_objeto }} – {{ t.marca }} {{ t.material }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Estado -->
+                        <div>
+                            <label for="id_filtro_estado" class="form-label mb-1">Estado</label>
+                            <select id="id_filtro_estado"
+                                    name="estado"
+                                    class="form-select form-select-sm">
+                                <option value="">Todos los estados</option>
+                                {% for value, label in estados %}
+                                    <option value="{{ value }}"
+                                            {% if estado_actual == value|stringformat:'s' %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- Marca -->
+                        <div>
+                        <label for="id_filtro_marca" class="form-label mb-1">Marca</label>
+                        <select id="id_filtro_marca" name="marca" class="form-select form-select-sm">
+                            <option value="">Todas las marcas</option>
+                            {% for m in marcas %}
+                                <option value="{{ m }}" {% if marca_actual == m %}selected{% endif %}>
+                                {{ m }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        </div>
+
+                        <!-- Material -->
+                        <div>
+                        <label for="id_filtro_material" class="form-label mb-1">Material</label>
+                        <select id="id_filtro_material" name="material" class="form-select form-select-sm">
+                            <option value="">Todos los materiales</option>
+                            {% for mat in materiales %}
+                                <option value="{{ mat }}" {% if material_actual == mat %}selected{% endif %}>
+                                {{ mat }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary btn-sm mt-2 w-100">
+                            Aplicar filtros
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Columna con los resúmenes -->
+        <div class="col-md-9">
+
+            <!-- Resumen por sector -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <strong>Resumen por sector</strong>
+                </div>
+                <div class="card-body p-3">
+                    {% if resumen_sector %}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Sector</th>
+                                        <th class="text-end">Total cant.</th>
+                                        <th class="text-end">% Bueno</th>
+                                        <th class="text-end">% Pendiente</th>
+                                        <th class="text-end">% Malo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for r in resumen_sector %}
+                                        <tr>
+                                            <td>{{ r.lugar__piso__ubicacion__sector__sector }}</td>
+                                            <td class="text-end">{{ r.total|default:0 }}</td>
+                                            <td class="text-end">{{ r.pct_buenas }}%</td>
+                                            <td class="text-end">{{ r.pct_pendientes }}%</td>
+                                            <td class="text-end">{{ r.pct_malas }}%</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No hay datos de objetos para calcular el resumen por sector.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Resumen por ubicación -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <strong>Resumen por ubicación</strong>
+                </div>
+                <div class="card-body p-3">
+                    {% if resumen_ubic %}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Sector</th>
+                                        <th>Ubicación</th>
+                                        <th class="text-end">Total cant.</th>
+                                        <th class="text-end">% Bueno</th>
+                                        <th class="text-end">% Pendiente</th>
+                                        <th class="text-end">% Malo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for r in resumen_ubic %}
+                                        <tr>
+                                            <td>{{ r.lugar__piso__ubicacion__sector__sector }}</td>
+                                            <td>{{ r.lugar__piso__ubicacion__ubicacion }}</td>
+                                            <td class="text-end">{{ r.total|default:0 }}</td>
+                                            <td class="text-end">{{ r.pct_buenas }}%</td>
+                                            <td class="text-end">{{ r.pct_pendientes }}%</td>
+                                            <td class="text-end">{{ r.pct_malas }}%</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No hay datos de objetos para calcular el resumen por ubicación.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Resumen por objeto -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <strong>Resumen por objeto</strong>
+                    <small class="text-muted d-block">
+                        Muestra el porcentaje de estado de cada objeto y, si corresponde,
+                        los lugares donde ese objeto está en estado <em>Malo</em>.
+                    </small>
+                </div>
+                <div class="card-body p-3">
+                    {% if resumen_objetos %}
+                        <div class="table-responsive">
+                            <table class="table table-sm table-striped align-middle">
+                                <thead>
+                                    <tr>
+                                        <th>Objeto</th>
+                                        <th class="text-end">Total cant.</th>
+                                        <th class="text-end">% Bueno</th>
+                                        <th class="text-end">% Pendiente</th>
+                                        <th class="text-end">% Malo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for obj in resumen_objetos %}
+                                        <tr class="table-light">
+                                            <td><strong>{{ obj.nombre }}</strong></td>
+                                            <td class="text-end">{{ obj.total }}</td>
+                                            <td class="text-end">{{ obj.pct_buenas }}%</td>
+                                            <td class="text-end">{{ obj.pct_pendientes }}%</td>
+                                            <td class="text-end">{{ obj.pct_malas }}%</td>
+                                        </tr>
+
+                                        {% if obj.malos %}
+                                            <tr>
+                                                <td colspan="5">
+                                                    <small class="text-muted d-block mb-1">
+                                                        Lugares donde este objeto está registrado con
+                                                        estado <strong>Malo</strong>:
+                                                    </small>
+                                                    <ul class="mb-0">
+                                                        {% for ol in obj.malos %}
+                                                            <li>
+                                                                Sector: {{ ol.lugar.piso.ubicacion.sector.sector }} ·
+                                                                Ubicación: {{ ol.lugar.piso.ubicacion.ubicacion }} ·
+                                                                Piso {{ ol.lugar.piso.piso }} ·
+                                                                Lugar: {{ ol.lugar.nombre_del_lugar }}
+                                                                — Cantidad en mal estado: {{ ol.cantidad }}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted mb-0">
+                            No hay datos de objetos para calcular el resumen por objeto.
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div> <!-- /col-md-9 -->
+    </div> <!-- /row -->
+</div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width:720px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h3 class="mb-1">Crear tipo de objeto</h3>
+      <p class="text-muted mb-4">Asocia el objeto y define marca/material.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.objeto.id_for_label }}">Objeto</label>
+          <select
+            name="{{ form.objeto.name }}"
+            id="{{ form.objeto.id_for_label }}"
+            class="form-select {% if form.objeto.errors %}is-invalid{% endif %}"
+            required
+          >
+            {% for option in form.objeto.field.choices %}
+              <option value="{{ option.0 }}"
+                {% if form.objeto.value|stringformat:"s" == option.0|stringformat:"s" %}selected{% endif %}>
+                {{ option.1 }}
+              </option>
+            {% endfor %}
+            
+          </select>
+          {% if form.objeto.errors %}
+            <div class="invalid-feedback">{{ form.objeto.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label" for="{{ form.marca.id_for_label }}">Marca</label>
+            <input
+              type="text"
+              name="{{ form.marca.name }}"
+              id="{{ form.marca.id_for_label }}"
+              value="{{ form.marca.value|default_if_none:'' }}"
+              class="form-control {% if form.marca.errors %}is-invalid{% endif %}"
+              placeholder="Ej: Siemens"
+              required
+            >
+            {% if form.marca.errors %}
+              <div class="invalid-feedback">{{ form.marca.errors|striptags }}</div>
+            {% endif %}
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label" for="{{ form.material.id_for_label }}">Material</label>
+            <input
+              type="text"
+              name="{{ form.material.name }}"
+              id="{{ form.material.id_for_label }}"
+              value="{{ form.material.value|default_if_none:'' }}"
+              class="form-control {% if form.material.errors %}is-invalid{% endif %}"
+              placeholder="Ej: Acero inoxidable"
+              required
+            >
+            {% if form.material.errors %}
+              <div class="invalid-feedback">{{ form.material.errors|striptags }}</div>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="d-flex gap-2 mt-4">
+          <button class="btn btn-primary" type="submit">Guardar</button>
+          <a class="btn btn-outline-secondary" href="{% url 'home' %}">Cancelar</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

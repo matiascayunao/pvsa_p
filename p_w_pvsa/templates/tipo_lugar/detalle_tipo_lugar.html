@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between mb-3 gap-2">
+  <div>
+    <h3 class="mb-0">Tipo de lugar: <span class="fw-semibold">{{ tipo.tipo_de_lugar }}</span></h3>
+    <div class="text-muted small">Configura objetos típicos y revisa los lugares asociados.</div>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary btn-sm" href="{% url 'lista_tipos_lugar' %}">Volver</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <!-- Configurar típicos -->
+  <div class="col-12 col-lg-8">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <div class="fw-semibold">Objetos típicos</div>
+        <div class="text-muted small">
+          Seleccionados: <span id="contadorTipicos" class="fw-semibold">0</span>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-12 col-md-8">
+              <label class="form-label small mb-1">Buscar</label>
+              <input id="buscarTipoObjeto" type="search" class="form-control"
+                     placeholder="Buscar por categoría, objeto, marca o material...">
+            </div>
+            <div class="col-12 col-md-4 d-grid">
+              <button class="btn btn-primary" type="submit">Guardar cambios</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th style="width:42px;"></th>
+                  <th>Categoría</th>
+                  <th>Objeto</th>
+                  <th class="text-nowrap">Marca / Material</th>
+                </tr>
+              </thead>
+              <tbody id="tablaTiposObjeto">
+                {% for t in tipos_objeto %}
+                  <tr>
+                    <td>
+                      <input
+                        class="form-check-input js-tipico"
+                        type="checkbox"
+                        name="tipicos"
+                        value="{{ t.id }}"
+                        {% if t.id in tipicos_ids %}checked{% endif %}
+                      >
+                    </td>
+                    <td class="text-muted">{{ t.objeto.objeto_categoria.nombre_de_categoria }}</td>
+                    <td class="fw-semibold">{{ t.objeto.nombre_del_objeto }}</td>
+                    <td class="text-muted">
+                      {% if t.marca %}{{ t.marca }}{% endif %}
+                      {% if t.material %} {{ t.material }}{% endif %}
+                      {% if not t.marca and not t.material %}-{% endif %}
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="4" class="text-muted">No hay tipos de objeto registrados.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-grid d-md-none mt-2">
+            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista actual (tipo carrito) -->
+  <div class="col-12 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-header bg-white fw-semibold">Carrito de típicos</div>
+      <div class="card-body">
+        {% if tipicos %}
+          <div class="list-group">
+            {% for rel in tipicos %}
+              <div class="list-group-item d-flex align-items-start justify-content-between gap-2">
+                <div>
+                  <div class="small text-muted">{{ rel.tipo_objeto.objeto.objeto_categoria.nombre_de_categoria }}</div>
+                  <div class="fw-semibold">{{ rel.tipo_objeto.objeto.nombre_del_objeto }}</div>
+                  {% if rel.tipo_objeto.marca or rel.tipo_objeto.material %}
+                    <div class="text-muted small">
+                      {% if rel.tipo_objeto.marca %}{{ rel.tipo_objeto.marca }}{% endif %}
+                      {% if rel.tipo_objeto.material %} {{ rel.tipo_objeto.material }}{% endif %}
+                    </div>
+                  {% endif %}
+                </div>
+                <span class="badge text-bg-light">#{{ forloop.counter }}</span>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-muted">Aún no hay objetos típicos configurados para este tipo de lugar.</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-3">
+      <div class="card-header bg-white fw-semibold">Lugares con este tipo</div>
+      <div class="card-body">
+        {% if lugares %}
+          <ul class="list-group list-group-flush">
+            {% for l in lugares %}
+              <li class="list-group-item px-0 d-flex justify-content-between align-items-center">
+                <span>{{ l.nombre_del_lugar }}</span>
+                <a class="btn btn-outline-secondary btn-sm" href="{% url 'detalle_lugar' l.id %}">Ver</a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="text-muted">No hay lugares asociados a este tipo de lugar.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function actualizarContador() {
+    const checks = document.querySelectorAll(".js-tipico");
+    let c = 0;
+    checks.forEach(ch => { if (ch.checked) c++; });
+    document.getElementById("contadorTipicos").textContent = c;
+  }
+
+  function filtrarTabla() {
+    const q = (document.getElementById("buscarTipoObjeto").value || "").toLowerCase().trim();
+    const rows = document.querySelectorAll("#tablaTiposObjeto tr");
+    rows.forEach(tr => {
+      const txt = tr.innerText.toLowerCase();
+      tr.style.display = txt.includes(q) ? "" : "none";
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    actualizarContador();
+    document.querySelectorAll(".js-tipico").forEach(ch => {
+      ch.addEventListener("change", actualizarContador);
+    });
+    document.getElementById("buscarTipoObjeto").addEventListener("input", filtrarTabla);
+  });
+</script>
+{% endblock %}

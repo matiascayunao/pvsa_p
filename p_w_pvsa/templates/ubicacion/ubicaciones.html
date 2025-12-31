@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container py-4">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <div>
+            <h2 class="mb-0">Ubicaciones</h2>
+            <div class="text-muted">Listado de ubicaciones</div>
+        </div>
+    </div>
+
+    <!-- Filtro por sector -->
+    <form method="get" class="row g-2 align-items-end mb-3">
+        <div class="col-md-4">
+            <label for="id_sector_filtro" class="form-label mb-1">Filtrar por sector</label>
+            <select
+                name="sector"
+                id="id_sector_filtro"
+                class="form-select"
+                onchange="this.form.submit()"
+            >
+                <option value="">Todos los sectores</option>
+                {% for s in sectores %}
+                    <option value="{{ s.id }}"
+                        {% if sector_actual == s.id|stringformat:'s' %}selected{% endif %}
+                    >
+                        {{ s.sector }}
+                    </option>
+                {% endfor %}
+            </select>
+            <small class="text-muted">
+                Selecciona un sector para ver solo sus ubicaciones.
+            </small>
+        </div>
+    </form>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            {% if ubicaciones %}
+                <div class="list-group list-group-flush">
+                    {% for u in ubicaciones %}
+                        <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+                           href="{% url 'detalle_ubicacion' u.id %}">
+                            <div>
+                                <span>{{ u.ubicacion }}</span>
+                                <small class="text-muted ms-2">
+                                    ({{ u.sector.sector }})
+                                </small>
+                            </div>
+                            <span class="text-muted">Ver &raquo;</span>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="p-4">
+                    <div class="alert alert-secondary mb-0">
+                        No hay ubicaciones registradas
+                        {% if sector_actual %} para el sector seleccionado{% endif %}.
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

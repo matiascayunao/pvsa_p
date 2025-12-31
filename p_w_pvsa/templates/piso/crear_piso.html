@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5" style="max-width: 560px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h3 class="mb-1">Crear piso</h3>
+      <p class="text-muted mb-4">Selecciona la ubicación y define el número de piso.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="alert alert-danger">
+            {{ form.non_field_errors }}
+          </div>
+        {% endif %}
+        
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.piso.id_for_label }}">Piso</label>
+          <input
+            type="number"
+            name="{{ form.piso.name }}"
+            id="{{ form.piso.id_for_label }}"
+            value="{{ form.piso.value|default_if_none:'' }}"
+            class="form-control {% if form.piso.errors %}is-invalid{% endif %}"
+            placeholder="Ej: 1"
+            required
+          >
+          {% if form.piso.errors %}
+            <div class="invalid-feedback">
+              {{ form.piso.errors|striptags }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.ubicacion.id_for_label }}">Ubicación</label>
+          <select
+            name="{{ form.ubicacion.name }}"
+            id="{{ form.ubicacion.id_for_label }}"
+            class="form-select {% if form.ubicacion.errors %}is-invalid{% endif %}"
+            required
+          >
+            {% for option in form.ubicacion.field.choices %}
+              <option value="{{ option.0 }}"
+                {% if form.ubicacion.value|stringformat:"s" == option.0|stringformat:"s" %}selected{% endif %}>
+                {{ option.1 }}
+              </option>
+            {% endfor %}
+          </select>
+          {% if form.ubicacion.errors %}
+            <div class="invalid-feedback">
+              {{ form.ubicacion.errors|striptags }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Guardar</button>
+          <a class="btn btn-outline-secondary" href="{% url 'home' %}">Cancelar</a>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endblock %}

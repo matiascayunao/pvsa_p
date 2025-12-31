@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <div>
+      <h2 class="mb-0">Pisos</h2>
+      <div class="text-muted">Listado de pisos</div>
+    </div>
+    <a href="{% url 'crear_piso' %}" class="btn btn-primary">+ Crear piso</a>
+  </div>
+
+  <!-- Filtro por ubicación -->
+  <form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-md-5">
+      <label for="id_ubicacion_filtro" class="form-label mb-1">Filtrar por ubicación</label>
+      <select
+        name="ubicacion"
+        id="id_ubicacion_filtro"
+        class="form-select"
+        onchange="this.form.submit()"
+      >
+        <option value="">Todas las ubicaciones</option>
+        {% for u in ubicaciones %}
+          <option value="{{ u.id }}"
+                  {% if ubicacion_actual == u.id|stringformat:'s' %}selected{% endif %}>
+            {{ u.ubicacion }} ({{ u.sector.sector }})
+          </option>
+        {% endfor %}
+      </select>
+      <small class="text-muted">
+        Selecciona una ubicación para ver solo sus pisos.
+      </small>
+    </div>
+
+  </form>
+
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+      {% if pisos %}
+        <div class="list-group list-group-flush">
+          {% for p in pisos %}
+            <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+               href="{% url 'detalle_piso' piso_id=p.id %}">
+              <span>
+                Piso {{ p.piso }}
+                | Ubicación: {{ p.ubicacion }}
+                | Sector: {{ p.ubicacion.sector }}
+              </span>
+              <span class="text-muted">Ver &raquo;</span>
+            </a>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="p-4">
+          <div class="alert alert-secondary mb-0">
+            No hay pisos registrados{% if ubicacion_actual %} para la ubicación seleccionada{% endif %}.
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

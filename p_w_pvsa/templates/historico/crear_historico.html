@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width: 620px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h3 class="mb-1">Crear histórico</h3>
+      <p class="text-muted mb-3">
+        Objeto del lugar: <strong>{{ objeto_lugar }}</strong>
+      </p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label">Objeto del lugar</label>
+          {{ form.objeto_del_lugar }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Cantidad anterior</label>
+          {{ form.cantidad_anterior }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Estado anterior</label>
+          {{ form.estado_anterior }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Detalle anterior</label>
+          {{ form.detalle_anterior }}
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Fecha anterior (dd/mm/aaaa)</label>
+          {{ form.fecha_anterior }}
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Guardar</button>
+          <a class="btn btn-outline-secondary" href="{% url 'detalle_objeto_lugar' objeto_lugar.id %}">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

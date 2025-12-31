@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container py-4">
+    <div class="mb-3">
+        <a href="{% url 'lista_ubicaciones' %}" class="btn btn-outline-secondary">&laquo; Volver</a>
+    </div>
+    <div class="d-flex justify-content-between align-items-start mb-3">
+    <div>
+      <h2 class="mb-0">{{ ubicacion.ubicacion }}</h2>
+      <div class="text-muted">Sector: {{ ubicacion.sector.sector }}</div>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a href="{% url 'crear_piso' %}" class="btn btn-primary btn-sm">+ Agregar Piso</a>
+        <a class="btn btn-outline-primary" href="{% url 'editar_ubicacion' ubicacion.id %}">Editar</a>
+        <a class="btn btn-outline-danger" href="{% url 'borrar_ubicacion' ubicacion.id %}">Borrar</a>
+
+    </div>
+  </div>
+
+    <h4 class="mb-2">Pisos</h4>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            {% if pisos %}
+                <div class="list-group list-group-flush">
+                    {% for p in pisos %}
+                    <a href="{% url 'detalle_piso' p.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <span>Piso {{p.piso}}</span>
+                        <span class="text-muted">Abrir &raquo;</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="p-4">
+                    <div class="alert alert-secondary mb-0">
+                        Esta ubicación no tiene pisos cargados
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

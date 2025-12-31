@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4" style="max-width: 720px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h2 class="mb-2">Detalle histórico</h2>
+      <div class="text-muted mb-3">{{ historico.objeto_del_lugar }}</div>
+
+      <ul class="list-group mb-3">
+        <li class="list-group-item">Cantidad anterior: <strong>{{ historico.cantidad_anterior }}</strong></li>
+        <li class="list-group-item">Estado anterior: <strong>{{ historico.get_estado_anterior_display }}</strong></li>
+        <li class="list-group-item">Detalle anterior: <strong>{% if historico.detalle_anterior %}{{ historico.detalle_anterior }}{% else %}-{% endif %}</strong></li>
+        {% load i18n %}
+
+        <li class="list-group-item">Fecha anterior: <strong>{{ historico.fecha_anterior|date:"d \\d\\e F \\d\\e Y" }}</strong></li>
+      </ul>
+
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" href="{% url 'lista_historicos' %}">&laquo; Volver</a>
+        <a class="btn btn-outline-primary" href="{% url 'editar_historico' historico_id=historico.id %}">Editar</a>
+        <a class="btn btn-outline-danger" href="{% url 'borrar_historico' historico_id=historico.id %}">Borrar</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

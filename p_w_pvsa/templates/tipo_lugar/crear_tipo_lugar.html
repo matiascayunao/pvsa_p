@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5" style="max-width:560px;">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      <h3 class="mb-1">Crear tipo de lugar</h3>
+      <p class="text-muted mb-4">Ej: Sala, Bodega, Oficina, Patio.</p>
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label" for="{{ form.tipo_de_lugar.id_for_label }}">Tipo de lugar</label>
+          <input
+            type="text"
+            name="{{ form.tipo_de_lugar.name }}"
+            id="{{ form.tipo_de_lugar.id_for_label }}"
+            value="{{ form.tipo_de_lugar.value|default_if_none:'' }}"
+            class="form-control {% if form.tipo_de_lugar.errors %}is-invalid{% endif %}"
+            placeholder="Ej: Bodega"
+            required
+          >
+          {% if form.tipo_de_lugar.errors %}
+            <div class="invalid-feedback">{{ form.tipo_de_lugar.errors|striptags }}</div>
+          {% endif %}
+        </div>
+
+        <div class="d-flex gap-2">
+          <button class="btn btn-primary" type="submit">Guardar</button>
+          <a class="btn btn-outline-secondary" href="{% url 'home' %}">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
