@@ -41,144 +41,138 @@
 
           <!-- Contenido colapsable -->
           <div class="collapse navbar-collapse" id="navbarPVSA">
-            <!-- Wrapper para centrar el bloque del medio sin romper izquierda/derecha -->
-            <div class="d-flex flex-column flex-lg-row w-100 align-items-lg-center">
 
-              <!-- MENÚ CENTRAL (centrado real en LG y sin salto de línea) -->
-              <div class="flex-grow-1 d-flex justify-content-lg-center">
-                <div class="w-100 w-lg-auto overflow-auto">
-                  <ul class="navbar-nav align-items-lg-center justify-content-lg-center flex-lg-nowrap gap-1 gap-lg-2 py-2 py-lg-0">
+            <!-- CENTRO (sin overflow para que los dropdown no se rompan) -->
+            <div class="d-flex flex-grow-1 justify-content-lg-center">
+              <ul class="navbar-nav align-items-lg-center flex-lg-nowrap gap-1 gap-lg-2 py-2 py-lg-0">
 
-                    <li class="nav-item">
-                      <a class="nav-link fw-semibold" href="{% url 'crear_estructura' %}">FORMULARIO</a>
-                    </li>
+                <li class="nav-item">
+                  <a class="nav-link fw-semibold" href="{% url 'crear_estructura' %}">FORMULARIO</a>
+                </li>
 
-                    <!-- RESUMEN al lado de FORMULARIO -->
-                    <li class="nav-item">
-                      <a class="nav-link fw-semibold" href="{% url 'resumen_general' %}">RESUMEN</a>
-                    </li>
+                <li class="nav-item">
+                  <a class="nav-link fw-semibold" href="{% url 'resumen_general' %}">RESUMEN</a>
+                </li>
 
-                    <li class="nav-item d-none d-lg-block">
-                      <span class="vr mx-1"></span>
-                    </li>
+                <li class="nav-item d-none d-lg-block">
+                  <span class="vr mx-1"></span>
+                </li>
 
-                    <!-- SECTOR -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        SECTOR
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'lista_sectores' %}">Ver</a></li>
-                        <li><a class="dropdown-item" href="{% url 'crear_sector' %}">Crear</a></li>
-                      </ul>
-                    </li>
-
-                    <!-- UBICACION -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        UBICACION
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'lista_ubicaciones' %}">Ver</a></li>
-                        <li><a class="dropdown-item" href="{% url 'crear_ubicacion' %}">Crear</a></li>
-                      </ul>
-                    </li>
-
-                    <!-- LUGAR -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        LUGAR
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'lista_lugares' %}">Ver</a></li>
-                        <li><a class="dropdown-item" href="{% url 'crear_lugar' %}">Crear</a></li>
-                      </ul>
-                    </li>
-
-                    <li class="nav-item d-none d-lg-block">
-                      <span class="vr mx-1"></span>
-                    </li>
-
-                    <!-- TIPO DE OBJETO -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        TIPO DE OBJETO
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'lista_tipos_objeto' %}">Ver</a></li>
-                        <li><a class="dropdown-item" href="{% url 'crear_tipo_objeto' %}">Crear</a></li>
-                      </ul>
-                    </li>
-
-                    <!-- OBJETO DEL LUGAR -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        OBJETO DEL LUGAR
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'lista_objetos_lugar' %}">Ver</a></li>
-                      </ul>
-                    </li>
-
-                    <!-- HISTORICO -->
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        HISTORICO
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="{% url 'lista_historicos' %}">Ver</a></li>
-                      </ul>
-                    </li>
-
-                  </ul>
-                </div>
-              </div>
-
-              <!-- Usuario (derecha) -->
-              <ul class="navbar-nav ms-lg-auto pb-2 pb-lg-0">
+                <!-- SECTOR -->
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ user.username }}
+                    SECTOR
                   </a>
-
-                  <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                    <li><h6 class="dropdown-header">Piso</h6></li>
-                    <li><a class="dropdown-item" href="{% url 'lista_pisos' %}">Ver</a></li>
-                    <li><a class="dropdown-item" href="{% url 'crear_piso' %}">Crear</a></li>
-
-                    <li><hr class="dropdown-divider"></li>
-
-                    <li><h6 class="dropdown-header">Tipo de lugar</h6></li>
-                    <li><a class="dropdown-item" href="{% url 'lista_tipos_lugar' %}">Ver</a></li>
-                    <li><a class="dropdown-item" href="{% url 'crear_tipo_lugar' %}">Crear</a></li>
-
-                    <li><hr class="dropdown-divider"></li>
-
-                    <li><h6 class="dropdown-header">Categoria del objeto</h6></li>
-                    <li><a class="dropdown-item" href="{% url 'lista_categorias' %}">Ver</a></li>
-                    <li><a class="dropdown-item" href="{% url 'crear_categoria_objeto' %}">Crear</a></li>
-
-                    <li><hr class="dropdown-divider"></li>
-
-                    <li><h6 class="dropdown-header">Objeto</h6></li>
-                    <li><a class="dropdown-item" href="{% url 'lista_objetos' %}">Ver</a></li>
-                    <li><a class="dropdown-item" href="{% url 'crear_objeto' %}">Crear</a></li>
-
-                    {% if user.is_staff or user.is_superuser %}
-                      <li><hr class="dropdown-divider"></li>
-                      <li><a class="dropdown-item" href="{% url 'descargar_excel_sectores' %}">Descargar Excel</a></li>
-                      <li><a class="dropdown-item" href="/admin/">Panel Admin</a></li>
-                      <li><a class="dropdown-item" href="{% url 'signup' %}">Crear usuario</a></li>
-                    {% endif %}
-
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="{% url 'signout' %}">Cerrar sesión</a></li>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'lista_sectores' %}">Ver</a></li>
+                    <li><a class="dropdown-item" href="{% url 'crear_sector' %}">Crear</a></li>
                   </ul>
-
                 </li>
-              </ul>
 
+                <!-- UBICACION -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    UBICACION
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'lista_ubicaciones' %}">Ver</a></li>
+                    <li><a class="dropdown-item" href="{% url 'crear_ubicacion' %}">Crear</a></li>
+                  </ul>
+                </li>
+
+                <!-- LUGAR -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    LUGAR
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'lista_lugares' %}">Ver</a></li>
+                    <li><a class="dropdown-item" href="{% url 'crear_lugar' %}">Crear</a></li>
+                  </ul>
+                </li>
+
+                <li class="nav-item d-none d-lg-block">
+                  <span class="vr mx-1"></span>
+                </li>
+
+                <!-- TIPO DE OBJETO -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    TIPO DE OBJETO
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'lista_tipos_objeto' %}">Ver</a></li>
+                    <li><a class="dropdown-item" href="{% url 'crear_tipo_objeto' %}">Crear</a></li>
+                  </ul>
+                </li>
+
+                <!-- OBJETO DEL LUGAR -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    OBJETO DEL LUGAR
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'lista_objetos_lugar' %}">Ver</a></li>
+                  </ul>
+                </li>
+
+                <!-- HISTORICO -->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    HISTORICO
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{% url 'lista_historicos' %}">Ver</a></li>
+                  </ul>
+                </li>
+
+              </ul>
             </div>
+
+            <!-- Usuario (derecha) -->
+            <ul class="navbar-nav ms-lg-auto pb-2 pb-lg-0">
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  {{ user.username }}
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                  <li><h6 class="dropdown-header">Piso</h6></li>
+                  <li><a class="dropdown-item" href="{% url 'lista_pisos' %}">Ver</a></li>
+                  <li><a class="dropdown-item" href="{% url 'crear_piso' %}">Crear</a></li>
+
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li><h6 class="dropdown-header">Tipo de lugar</h6></li>
+                  <li><a class="dropdown-item" href="{% url 'lista_tipos_lugar' %}">Ver</a></li>
+                  <li><a class="dropdown-item" href="{% url 'crear_tipo_lugar' %}">Crear</a></li>
+
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li><h6 class="dropdown-header">Categoria del objeto</h6></li>
+                  <li><a class="dropdown-item" href="{% url 'lista_categorias' %}">Ver</a></li>
+                  <li><a class="dropdown-item" href="{% url 'crear_categoria_objeto' %}">Crear</a></li>
+
+                  <li><hr class="dropdown-divider"></li>
+
+                  <li><h6 class="dropdown-header">Objeto</h6></li>
+                  <li><a class="dropdown-item" href="{% url 'lista_objetos' %}">Ver</a></li>
+                  <li><a class="dropdown-item" href="{% url 'crear_objeto' %}">Crear</a></li>
+
+                  {% if user.is_staff or user.is_superuser %}
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{% url 'descargar_excel_sectores' %}">Descargar Excel</a></li>
+                    <li><a class="dropdown-item" href="/admin/">Panel Admin</a></li>
+                    <li><a class="dropdown-item" href="{% url 'signup' %}">Crear usuario</a></li>
+                  {% endif %}
+
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'signout' %}">Cerrar sesión</a></li>
+                </ul>
+
+              </li>
+            </ul>
+
           </div>
         {% endif %}
       </div>
